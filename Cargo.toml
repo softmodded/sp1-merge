@@ -1,0 +1,8 @@
+[package]
+name = "sp1-merge"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+claxon = "0.4"
+rubato = "0.15"
