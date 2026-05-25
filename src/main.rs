@@ -25,12 +25,15 @@ struct StemConfig {
     drums: String,
     #[serde(default = "default_other")]
     other: String,
+    #[serde(default = "default_output_dir")]
+    output_dir: String,
 }
 
 fn default_vocals() -> String { "vocals".into() }
 fn default_bass() -> String { "bass".into() }
 fn default_drums() -> String { "drums".into() }
 fn default_other() -> String { "other".into() }
+fn default_output_dir() -> String { String::new() }
 
 impl Default for StemConfig {
     fn default() -> Self {
@@ -39,6 +42,7 @@ impl Default for StemConfig {
             bass: default_bass(),
             drums: default_drums(),
             other: default_other(),
+            output_dir: default_output_dir(),
         }
     }
 }
@@ -91,11 +95,28 @@ fn config_menu() -> Result<(), Box<dyn Error>> {
         });
     }
 
+    let out_desc = if current.output_dir.is_empty() {
+        "(same folder as stems)"
+    } else {
+        &current.output_dir
+    };
+    print!("output folder [{}]: ", out_desc);
+    io::stdout().flush()?;
+    let mut out_input = String::new();
+    io::stdin().read_line(&mut out_input)?;
+    let out_input = out_input.trim().to_string();
+    let output_dir = if out_input.is_empty() {
+        current.output_dir.clone()
+    } else {
+        out_input
+    };
+
     let config = StemConfig {
         vocals: values[0].clone(),
         bass: values[1].clone(),
         drums: values[2].clone(),
         other: values[3].clone(),
+        output_dir,
     };
     save_config(&config)?;
     println!("saved to {}", config_path().unwrap_or_default().display());
@@ -217,7 +238,14 @@ fn process_one(folder: &Path, config: &StemConfig) -> Result<(), Box<dyn Error>>
         .file_name()
         .unwrap_or_default()
         .to_string_lossy();
-    let output_path = folder.join(format!("{}.wav", folder_name));
+    let output_dir: &Path = if config.output_dir.is_empty() {
+        folder
+    } else {
+        let od = Path::new(&config.output_dir);
+        fs::create_dir_all(od)?;
+        od
+    };
+    let output_path = output_dir.join(format!("{}.wav", folder_name));
     write_multichannel_wav(&output_path, &stems, min_len)?;
 
     println!("wrote: {}", output_path.display());
