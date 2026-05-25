@@ -6,6 +6,8 @@ the resulting wav file is able to be uploaded to any sp-01 using the [web stem l
 
 ## how to use:
 <img width="791" height="288" alt="image" src="https://github.com/user-attachments/assets/e7dc56bf-1f98-4636-8992-3a5b584fb19c" />  
+`sp1-merge` - starts the program  
+`sp1-merge config` - opens configuration editor  
   
 ## building  
 requirements: 
