@@ -280,7 +280,7 @@ fn convert_to_flac(input: &Path) -> Result<PathBuf, Box<dyn Error>> {
         .stdout(std::process::Stdio::null())
         .stderr(std::process::Stdio::piped())
         .status()
-        .map_err(|_| "ffmpeg not found — install it to convert non-flac stems".to_string())?;
+        .map_err(|_| "ffmpeg not found. please install it to convert non-flac stems".to_string())?;
 
     if !status.success() {
         let _ = fs::remove_file(&temp_path);
