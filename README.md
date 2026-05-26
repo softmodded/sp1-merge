@@ -1,7 +1,8 @@
 # sp1-merge
 
+**(you should probably use the [website](https://sp1.clefairy.org/). this cli is if you're familiar with the terminal and need to bulk-encode songs)**  
+
 a rust cli tool for merging stem files created with [demucs](https://github.com/CarlGao4/Demucs-Gui) into a .wav file compatible with the teenage engineering sp-01  
-(you should probably use the [website](https://sp1.clefairy.org/). this cli is if you're familiar with the terminal and need to bulk-encode songs)
   
 the resulting wav file is able to be uploaded to any sp-01 using the [web stem loader](https://solderless.engineering)  
 
